@@ -1,0 +1,19 @@
+name: keep-warm
+
+# Pings the Render free-tier API so it never idles into a 50s cold start.
+# Render sleeps after ~15 min without traffic; a request every 10 min keeps
+# it awake. GitHub may delay scheduled runs under load, so 10 min leaves margin.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      # --max-time 90 so a cold wake (up to ~50s) completes; never fails the
+      # job on HTTP status, the goal is to warm the service, not to monitor it.
+      - run: |
+          curl -s -o /dev/null -w "health: HTTP %{http_code} in %{time_total}s\n" \
+            --max-time 90 https://novanis.onrender.com/health || true
