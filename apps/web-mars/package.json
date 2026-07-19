@@ -1,0 +1,39 @@
+{
+  "name": "web-mars",
+  "version": "0.0.0",
+  "description": "NovaNIS web app (mars)",
+  "license": "MIT",
+  "author": "Alex Sehl <widesehl@gmail.com>",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite preview",
+    "build": "vite build",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@novanis/shared": "*",
+    "@vueuse/core": "^14.3.0",
+    "axios": "^1.18.1",
+    "maska": "^3.2.0",
+    "nanoevents": "^9.1.0",
+    "nanoid": "^5.1.16",
+    "pinia": "^3.0.4",
+    "slimeform": "^0.6.1",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0",
+    "vue-scroll-picker": "^1.1.3",
+    "vue-slider-component": "^4.0.0-beta.9"
+  },
+  "devDependencies": {
+    "@iconify/vue": "^3.2.1",
+    "@tailwindcss/vite": "^4.3.1",
+    "@types/node": "^24.5.2",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.3",
+    "vite-plugin-pwa": "^1.3.0",
+    "vue-tsc": "^3.3.5",
+    "workbox-window": "^7.4.1"
+  }
+}

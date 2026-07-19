@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "NODE_TLS_REJECT_UNAUTHORIZED",
+    "PORT",
+    "JWT_SECRET",
+    "CRYPT_KEY",
+    "IPINFO_TOKEN",
+    "VITE_SERVER_URL"
+  ],
+  "tasks": {
+    "start": {},
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    }
+  }
+}

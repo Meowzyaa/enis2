@@ -1,0 +1,22 @@
+# Render blueprint: one free web service runs the API, which also serves
+# the built SPA (same origin, relative URLs; no CORS config needed).
+services:
+  - type: web
+    name: novanis
+    runtime: node
+    region: frankfurt # closest Render region to Kazakhstan
+    plan: free # sleeps after ~15 min idle; first request then takes ~30-50s
+    # --production=false: NODE_ENV=production is set at build time too, and
+    # yarn would otherwise skip devDependencies (turbo/vite/tsx = build fails).
+    buildCommand: yarn install --frozen-lockfile --production=false && yarn build
+    startCommand: npx tsx apps/api/src/index.ts
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      # Must be EXACTLY 32 bytes; Render prompts for it on blueprint setup.
+      # Generate with: node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
+      - key: CRYPT_KEY
+        sync: false

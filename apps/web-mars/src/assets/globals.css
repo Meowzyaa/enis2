@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: toggled via `.dark` on <html> (see App.vue). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist", ui-sans-serif, system-ui, sans-serif;
+
+  /* NovaNIS identity: coral ink on calm pine-tinted paper. Flat surfaces,
+     hairline borders; the accent is functional ink (nav, actions, meters),
+     never a surface wash. (Token names kept as `plum*` for stability.)
+     `coral` = fills and dark-mode text; `coral-strong` = light-mode text
+     accent and pressed states (tuned for 4.5:1 on paper). */
+  --color-coral: #f86f5e;
+  --color-coral-strong: #c93c2b;
+
+  --color-plum: #1b2a22;
+  --color-plum-deep: #0f1712;
+  --color-plum-card: #182219;
+  --color-plum-soft: #243228;
+
+  --color-paper: #f4f6f3;
+  --color-paper-card: #ffffff;
+
+  /* Grade semantics. Base = fills and dark-mode text; `-strong` = light-mode
+     text (AA on paper). */
+  --color-good: #2eb872;
+  --color-good-strong: #1e7d4e;
+  --color-ok: #f2a93b;
+  --color-pass: #a85fd0;
+  --color-pass-strong: #8a3cb5;
+}
+
+/* Focus ring in the accent; the darker variant keeps it visible on paper. */
+@utility default-focus {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-coral-strong dark:focus-visible:ring-coral;
+}
+
+/* Flat panel: solid surface + hairline border. No glass, no glow, no shadow;
+   elevation is reserved for floating layers (modals, toasts). */
+@utility surface {
+  @apply bg-paper-card dark:bg-plum-card border border-black/[0.07] dark:border-white/[0.08];
+}
+
+body {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-paper text-plum antialiased;
+}
+
+html.dark body {
+  @apply bg-plum-deep text-paper;
+}
+
+:root {
+  --autofill-background: #fdecea;
+  --autofill-color: #1b2a22;
+  --scroll-picker-border-color: #d9e6dd;
+  --scroll-picker-item-color: #1b2a22;
+  --switch-track: rgba(27, 42, 34, 0.18);
+}
+
+html.dark {
+  --autofill-background: #243228;
+  --autofill-color: #e6f2ea;
+  --scroll-picker-border-color: #243228;
+  --scroll-picker-item-color: #9aa89e;
+  --switch-track: rgba(230, 242, 234, 0.16);
+  color-scheme: dark;
+}
+
+/* ---- Style presets -----------------------------------------------------
+   Each preset = a palette + a typeface, applied via `theme-<name>` on <html>
+   (see App.vue). "forest" is the @theme baseline above and carries no class.
+   Dark/light still toggles independently via `.dark`. */
+
+/* Grape: violet base, magenta accent, Space Grotesk. */
+html.theme-grape {
+  --color-coral: #e0529c;
+  --color-coral-strong: #b02c72;
+  --color-plum: #241b2e;
+  --color-plum-deep: #15111c;
+  --color-plum-card: #221b2e;
+  --color-plum-soft: #2e2640;
+  --color-paper: #f7f4fa;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Sand: warm espresso base, terracotta accent, Fraunces headings. */
+html.theme-sand {
+  --color-coral: #d2693f;
+  --color-coral-strong: #a4471f;
+  --color-plum: #2a241d;
+  --color-plum-deep: #1a1611;
+  --color-plum-card: #271f18;
+  --color-plum-soft: #352c22;
+  --color-paper: #f6f1e9;
+  --color-paper-card: #fffdf8;
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+}
+
+/* Ocean: deep teal-navy base, cyan accent, Sora. */
+html.theme-ocean {
+  --color-coral: #2bb6c4;
+  --color-coral-strong: #157d89;
+  --color-plum: #14222b;
+  --color-plum-deep: #0d161c;
+  --color-plum-card: #122029;
+  --color-plum-soft: #1c2f3a;
+  --color-paper: #eef4f6;
+  --color-paper-card: #ffffff;
+  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Display type reads tighter with a hair of negative tracking. */
+.font-display {
+  letter-spacing: -0.012em;
+}
+
+/* ---- Motion kit ------------------------------------------------------- */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Route view swap: soft cross-fade + lift. */
+.view-enter-active {
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.view-leave-active {
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease;
+}
+.view-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.view-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* Staggered entrance for lists/cards. Set --i on each item for the delay. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+/* Animatable conic ring (transition the registered percentage). */
+@property --ring {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

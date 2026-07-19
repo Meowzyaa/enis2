@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web-mars",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "cross-env",
+        "VITE_SERVER_URL=http://localhost:4000",
+        "vite",
+        "apps/web-mars",
+        "--port",
+        "3000"
+      ],
+      "port": 3000
+    }
+  ]
+}
